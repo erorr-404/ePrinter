@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Main Page{% endblock %}
+
+{% block nav_page_3 %}
+    active
+{% endblock %}
+
+{% block content %}
+    <h1>Hello, {{ user }}</h1>
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+      {% for ctg, msg in messages %}
+        {% if ctg == "error" %}
+          <div class="alert alert-danger" role="alert">
+            {{ msg }}
+          </div>
+        {% elif ctg == "info" %}
+          <div class="alert alert-info" role="alert">
+            {{ msg }}
+          </div>
+        {% elif ctg == "success" %}
+          <div class="alert alert-success" role="alert">
+            {{ msg }}
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <form action="#" method="POST">
+        <input type="email" name="email" placeholder="Enter Email" value="{{email if email}}">
+        <input type="submit" value="submit">
+    </form>
+    <a href="/logout">Click to logout.</a>
+{% endblock %}

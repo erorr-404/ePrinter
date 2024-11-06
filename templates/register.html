@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+  <h1>Register</h1>
+  {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+      {% for ctg, msg in messages %}
+        {% if ctg == "error" %}
+          <div class="alert alert-danger" role="alert">
+            {{ msg }}
+          </div>
+        {% elif ctg == "info" %}
+          <div class="alert alert-info" role="alert">
+            {{ msg }}
+          </div>
+        {% elif ctg == "success" %}
+          <div class="alert alert-success" role="alert">
+            {{ msg }}
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+  <form action="#" method="post">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Email address</label>
+      <input type="email" name="eml" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+      <small id="emailHelp" class="form-text text-muted">We will send email when a document is ready.</small>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Name</label>
+      <input type="text" name="nm" class="form-control" id="exampleInputName1" aria-describedby="nameHelp" placeholder="Enter name">
+      <small id="nameHelp" class="form-text text-muted">Enter your name here.</small>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Password</label>
+      <input type="password" name="pwd" class="form-control" id="exampleInputPassword1" placeholder="Password">
+    </div>
+    <div class="form-group">
+      <a href="/login">Have an account? Login here.</a>
+    </div>
+    <button type="submit" value="submit" class="btn btn-primary">Submit</button>
+
+<!--    <p>Name:</p>-->
+<!--    <p><input type="text" name="nm"></p>-->
+<!--    <p>Email:</p>-->
+<!--    <p><input type="email" name="eml"></p>-->
+<!--    <p>Password:</p>-->
+<!--    <p><input type="password" name="pwd"></p>-->
+<!--    <p><input type="submit" value="submit"></p>-->
+  </form>
+{% endblock %}
