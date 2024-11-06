@@ -6,5 +6,20 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Home</h1>
+    <h1 class="text-center">Home</h1>
+    <div class="card text-center">
+        <h5 class="card-header">About us</h5>
+        <div class="card-body">
+            <h5 class="card-title">ePrinter</h5>
+            <p class="card-text">We bring modern innovations into old systems.</p>
+            <a href="#" class="btn btn-primary">Print your document now</a>
+        </div>
+    </div>
+    <div class="card mb-3 my-5">
+        <img src="{{url_for('static', filename='printer.jpg' )}}" height="300px" style="object-fit: cover" class="card-img-top" alt="Our printer">
+        <div class="card-body">
+            <h5 class="card-title">Our technics</h5>
+            <p class="card-text">Our hi-tech printers can print hight-quality black and white documents</p>
+        </div>
+    </div>
 {% endblock %}
