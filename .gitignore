@@ -1,3 +1,4 @@
 
 instance/users.sqlite3
-.idea
+/.idea
+/.files

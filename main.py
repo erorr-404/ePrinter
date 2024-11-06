@@ -1,19 +1,25 @@
+import os
+from datetime import datetime
 from flask import Flask, redirect, url_for, render_template, request, session, flash
 from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.utils import secure_filename
+
+UPLOAD_FOLDER = 'files'  # Configure upload folder
 
 app = Flask(__name__)
 app.secret_key = "dont_hack_me_pls"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.sqlite3"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.permanent_session_lifetime = timedelta(days=28)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # Static: {{url_for('static', filename='style.css' )}}"
 
 db = SQLAlchemy(app)
 
 
 class Users(db.Model):
-    _id = db.Column("id", db.Integer, primary_key=True)
+    id = db.Column("id", db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     email = db.Column(db.String(100))
     password = db.Column(db.String(100))
@@ -22,6 +28,33 @@ class Users(db.Model):
         self.name = name
         self.email = email
         self.password = password
+
+
+class Files(db.Model):
+    id = db.Column("id", db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Link to User
+    filename = db.Column(db.String(255), nullable=False)
+    filepath = db.Column(db.String(255), nullable=False)  # Actual path where the file is stored
+    upload_date = db.Column(db.DateTime, default=datetime.now())
+    file_type = db.Column(db.String(50))  # e.g., "image/png"
+
+    def __init__(self, user_id, file_name: str, file_path=f"{app.config['UPLOAD_FOLDER']}/"):
+        self.user_id = user_id
+        self.filename = file_name
+        self.filepath = file_path
+        self.file_type = file_name.split(".")[1]
+
+
+class FilePart(db.Model):
+    id = db.Column("id", db.Integer, primary_key=True)
+    file_id = db.Column(db.Integer, db.ForeignKey('files.id'), nullable=False)
+    part_number = db.Column(db.Integer, nullable=False)  # Part order
+    part_filepath = db.Column(db.String(255), nullable=False)  # Path to a part
+
+    def __init__(self, file_id, file_name, part_number):
+        self.file_id = file_id
+        self.part_number = part_number
+        self.part_filepath = f"{file_name}_part_{part_number}"
 
 
 @app.route("/")
@@ -116,13 +149,35 @@ def account():
         return redirect(url_for("login"))
 
 
-@app.route("/print")
+@app.route("/print", methods=["POST", "GET"])
 def add_document():
-    if "user" in session:
-        return render_template("print.html")
+    if request.method == "GET":
+        if "user" in session:
+            return render_template("print.html")
+        else:
+            flash(f"You need to login to print.", "error")
+            return redirect(url_for("login"))
     else:
-        flash(f"You need to login to print.", "error")
-        return redirect(url_for("login"))
+        if "file" not in request.files or request.files["file"] == ("" or " "):
+            flash("File field can't be empty", "error")
+            return redirect(url_for("add_document"))
+        else:
+            user = Users.query.filter_by(name=session.get("user", "")).first()
+            if user:
+                file = request.files["file"]
+                file_name = secure_filename(file.filename)
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
+                # self, user_id, file_name: str, file_path=f"{app.config['UPLOAD_FOLDER']}/"
+                db_file = Files(user_id=user.id, file_name=file_name)
+                db.session.add(db_file)
+                db.session.commit()
+                file.save(file_path)
+
+                flash("File have been added", "success")
+                return redirect(url_for("account"))
+            else:
+                flash("Error: no such user", "error")
+                return redirect(url_for("add_document"))
 
 
 if __name__ == '__main__':

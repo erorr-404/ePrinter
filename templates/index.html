@@ -16,10 +16,18 @@
         </div>
     </div>
     <div class="card mb-3 my-5">
-        <img src="{{url_for('static', filename='printer.jpg' )}}" height="300px" style="object-fit: cover" class="card-img-top" alt="Our printer">
+        <img src="{{url_for('static', filename='printer.jpg' )}}" height="300px" style="object-fit: cover;" class="card-img-top" alt="Our printer">
         <div class="card-body">
             <h5 class="card-title">Our technics</h5>
             <p class="card-text">Our hi-tech printers can print hight-quality black and white documents</p>
         </div>
+    </div>
+    <div class="card">
+        <h5 class="card-header">The working principle:</h5>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">1: You send your file to us</li>
+            <li class="list-group-item">2: We print your document</li>
+            <li class="list-group-item">3: You get your printed document and pay for it</li>
+        </ul>
     </div>
 {% endblock %}

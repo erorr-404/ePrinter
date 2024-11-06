@@ -5,30 +5,37 @@
   <meta charset="UTF-8">
   <title>{% block title %}{% endblock %}</title>
 </head>
-<body>
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">ePrinter</a>
-  <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
+<body style="!important min-height: 100vh">
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">ePrinter</a>
+    <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
           aria-controls="collapsibleNavId"
           aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="collapsibleNavId">
-    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-      <li class="nav-item {% block nav_page_1 %}{% endblock %}">
-        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item {% block nav_page_2 %}{% endblock %}">
-        <a class="nav-link" href="/print">Print document</a>
-      </li>
-      <li class="nav-item {% block nav_page_3 %}{% endblock %}">
-        <a class="nav-link" href="/account">Account</a>
-      </li>
-    </ul>
-  </div>
-</nav>
-  <div class="container mw-25">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavId">
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item {% block nav_page_1 %}{% endblock %}">
+          <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item {% block nav_page_2 %}{% endblock %}">
+          <a class="nav-link" href="/print">Print document</a>
+        </li>
+        <li class="nav-item {% block nav_page_3 %}{% endblock %}">
+          <a class="nav-link" href="/account">Account</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container mw-25 my-5">
     {% block content %}{% endblock %}
+  </div>
+  <div class="conteiner bg-dark px-5 py-3 text-white fixed-bottom">
+    <h5>Contacts:</h5>
+    <p>
+      <b>Adress: </b>Our adress, City, Country <br>
+      <b>Email: </b><a href="mailto:example@gmail.com">example@gmail.com</a>
+    </p>
   </div>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
