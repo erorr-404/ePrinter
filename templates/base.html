@@ -5,9 +5,9 @@
   <meta charset="UTF-8">
   <title>{% block title %}{% endblock %}</title>
 </head>
-<body style="!important min-height: 100vh">
+<body class="min-vh-100" style="display:flex; flex-direction:column; align-content: space-between;">
   <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">ePrinter</a>
+    <a class="navbar-brand" href="https://github.com/erorr-404/ePrinter">ePrinter</a>
     <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
           aria-controls="collapsibleNavId"
           aria-expanded="false" aria-label="Toggle navigation">
@@ -27,10 +27,10 @@
       </ul>
     </div>
   </nav>
-  <div class="container mw-25 my-5">
+  <div class="container mw-25 my-5" style="flex: 1;">
     {% block content %}{% endblock %}
   </div>
-  <div class="conteiner bg-dark px-5 py-3 text-white fixed-bottom">
+  <div class="conteiner bg-dark px-5 py-3 text-white">
     <h5>Contacts:</h5>
     <p>
       <b>Adress: </b>Our adress, City, Country <br>

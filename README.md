@@ -5,7 +5,8 @@ manually print them. When document is ready, it can be delivered.
 ## Features
 
 1. [x] User account managment
-2. [ ] Manually printing by administrator
+2. [x] User uploaded files list
+3. [ ] Manually printing by administrator
 
 ## Used technologies
 This project uses Flask and Python for back-end. Bootstrap stands for front-end.

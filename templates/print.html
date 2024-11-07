@@ -26,12 +26,16 @@
       {% endfor %}
     {% endif %}
     {% endwith %}
-    <form action="#" method="post" enctype="multipart/form-data">
-        <div class="custom-file">
-            <input type="file" class="custom-file-input" id="file" name="file" required>
-            <label class="custom-file-label" for="file">Choose file…</label>
-            <small id="filehelp" class="form-text text-muted">Supported file types: PDF</small>
+    <div class="card">
+        <div class="card-body">
+            <form action="#" method="post" enctype="multipart/form-data">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="file" name="file" required>
+                    <label class="custom-file-label" for="file">Choose file…</label>
+                    <small id="filehelp" class="form-text text-muted">Supported file types: PDF</small>
+                </div>
+                <button type="submit" value="submit" class="btn btn-primary">Submit</button>
+            </form>
         </div>
-        <button type="submit" value="submit" class="btn btn-primary">Submit</button>
-    </form>
+    </div>
 {% endblock %}

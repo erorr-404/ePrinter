@@ -4,6 +4,7 @@ from flask import Flask, redirect, url_for, render_template, request, session, f
 from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
+from flask_migrate import Migrate
 
 UPLOAD_FOLDER = 'files'  # Configure upload folder
 
@@ -37,6 +38,7 @@ class Files(db.Model):
     filepath = db.Column(db.String(255), nullable=False)  # Actual path where the file is stored
     upload_date = db.Column(db.DateTime, default=datetime.now())
     file_type = db.Column(db.String(50))  # e.g., "image/png"
+    printed = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(self, user_id, file_name: str, file_path=f"{app.config['UPLOAD_FOLDER']}/"):
         self.user_id = user_id
@@ -140,11 +142,18 @@ def account():
     if "user" in session:
         if request.method == "POST":
             email = request.form["email"]
+            user = request.form["name"]
             session["email"] = email
+            session["user"] = user
             flash("Email was saved.")
         else:
             email = session.get("email", "")
-        return render_template("user.html", email=email)
+            user = session.get("user", "")
+
+        usr = Users.query.filter_by(name=user).first()
+        files = Files.query.filter_by(user_id=usr.id)
+        fls = [(file.id, file.filename, file.upload_date, file.printed) for file in files]
+        return render_template("user.html", email=email, name=user, files=fls)
     else:
         return redirect(url_for("login"))
 
@@ -183,4 +192,5 @@ def add_document():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
+        migrate = Migrate(app, db)
         app.run()
