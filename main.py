@@ -7,6 +7,11 @@ from werkzeug.utils import secure_filename
 from flask_migrate import Migrate
 
 UPLOAD_FOLDER = 'files'  # Configure upload folder
+PAGES_ALL = "ALL"
+PAGES_ODD = "ODD"
+PAGES_EVEN = "EVEN"
+ORIENTATION_BOOK = 1
+ORIENTATION_ALBUM = 2
 
 app = Flask(__name__)
 app.secret_key = "dont_hack_me_pls"
@@ -39,12 +44,27 @@ class Files(db.Model):
     upload_date = db.Column(db.DateTime, default=datetime.now())
     file_type = db.Column(db.String(50))  # e.g., "image/png"
     printed = db.Column(db.Boolean, default=False, nullable=False)
+    page_nums = db.Column(db.String(255), nullable=False, default=PAGES_ALL)
+    sheet_orientation = db.Column(db.Integer, nullable=False, default=ORIENTATION_BOOK)
+    pages_on_sheet = db.Column(db.Integer, nullable=False, default=1)
+    print_two_sides = db.Column(db.Boolean, default=False, nullable=False)
 
-    def __init__(self, user_id, file_name: str, file_path=f"{app.config['UPLOAD_FOLDER']}/"):
+    def __init__(self, user_id,
+                 file_name: str,
+                 file_path=f"{app.config['UPLOAD_FOLDER']}/",
+                 page_nums: str = PAGES_ALL,
+                 sheet_orientation: str = ORIENTATION_BOOK,
+                 pages_on_sheet: int = 1,
+                 print_two_sides: bool = False):
+
         self.user_id = user_id
         self.filename = file_name
         self.filepath = file_path
         self.file_type = file_name.split(".")[1]
+        self.page_nums = page_nums
+        self.sheet_orientation = sheet_orientation
+        self.pages_on_sheet = pages_on_sheet
+        self.print_two_sides = print_two_sides
 
 
 class FilePart(db.Model):
@@ -152,7 +172,7 @@ def account():
 
         usr = Users.query.filter_by(name=user).first()
         files = Files.query.filter_by(user_id=usr.id)
-        fls = [(file.id, file.filename, file.upload_date, file.printed) for file in files]
+        fls = [(file.id, file.filename, str(file.upload_date).split(".")[1], file.printed) for file in files]
         return render_template("user.html", email=email, name=user, files=fls)
     else:
         return redirect(url_for("login"))
@@ -176,8 +196,18 @@ def add_document():
                 file = request.files["file"]
                 file_name = secure_filename(file.filename)
                 file_path = os.path.join(app.config['UPLOAD_FOLDER'], file_name)
-                # self, user_id, file_name: str, file_path=f"{app.config['UPLOAD_FOLDER']}/"
-                db_file = Files(user_id=user.id, file_name=file_name)
+                page_nums = request.form.get("file-pages-radio", PAGES_ALL)  # TODO: fix this
+                sheet_orientation = request.form.get("page-orientation-radio", ORIENTATION_BOOK)
+                pages_on_sheet = request.form.get("page-pages-count-radio", 1)
+                print_two_sides = bool(request.form.get("sheet-two-sides-radio", False))
+
+                db_file = Files(user_id=user.id,
+                                file_name=file_name,
+                                page_nums=page_nums,
+                                sheet_orientation=sheet_orientation,
+                                pages_on_sheet=pages_on_sheet,
+                                print_two_sides=print_two_sides)
+
                 db.session.add(db_file)
                 db.session.commit()
                 file.save(file_path)

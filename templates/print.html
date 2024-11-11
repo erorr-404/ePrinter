@@ -29,10 +29,80 @@
     <div class="card">
         <div class="card-body">
             <form action="#" method="post" enctype="multipart/form-data">
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="file" name="file" required>
-                    <label class="custom-file-label" for="file">Choose file…</label>
-                    <small id="filehelp" class="form-text text-muted">Supported file types: PDF</small>
+                <div class="form-group">
+                    <h6>File:</h6>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="file" name="file" required>
+                        <label class="custom-file-label" for="file">Choose file…</label>
+                        <small id="filehelp" class="form-text text-muted">Supported file types: PDF</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <h6>Pages numbers:</h6>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="file-pages-radio" id="file-pages-radio-1"
+                               value="1" checked>
+                        <label class="form-check-label" for="file-pages-radio-1">All</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="file-pages-radio" id="file-pages-radio-2"
+                               value="2">
+                        <label class="form-check-label" for="file-pages-radio-2">Even</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="file-pages-radio" id="file-pages-radio-3"
+                               value="3">
+                        <label class="form-check-label" for="file-pages-radio-3">Odd</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="file-pages-radio" id="file-pages-radio-4"
+                               value="4">
+                        <label class="form-check-label"
+                               style="display: inline-flex; align-items: center; justify-content: center;" for="file-pages-radio-4">
+                            <label for="file-pages-custom" class="my-1 mx-2">Pages:</label>
+                            <input type="text" class="form-control" id="file-pages-custom" placeholder="Example: 1-3, 5" disabled>
+                        </label>
+                    </div>
+                    <script src="{{url_for('static', filename='file-pages-radio.js' )}}"></script>
+                </div>
+                <div class="form-group">
+                    <h6>Page orientation:</h6>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="page-orientation-radio" id="page-orientation-radio-1"
+                               value="1" checked>
+                        <label class="form-check-label" for="page-orientation-radio-1">Book</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="page-orientation-radio" id="page-orientation-radio-2"
+                               value="2">
+                        <label class="form-check-label" for="page-orientation-radio-2">Album</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <h6>Pages on one sheet:</h6>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="page-pages-count-radio" id="page-pages-count-radio-1"
+                               value="1" checked>
+                        <label class="form-check-label" for="page-pages-count-radio-1">1</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="page-pages-count-radio" id="page-pages-count-radio-2"
+                               value="2">
+                        <label class="form-check-label" for="page-pages-count-radio-2">2</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <h6>Print two sides of sheets:</h6>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="sheet-two-sides-radio" id="sheet-two-sides-radio-1"
+                               value="1">
+                        <label class="form-check-label" for="sheet-two-sides-radio-1">Yes</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="sheet-two-sides-radio" id="sheet-two-sides-radio-2"
+                               value="2" checked>
+                        <label class="form-check-label" for="sheet-two-sides-radio-2">No</label>
+                    </div>
                 </div>
                 <button type="submit" value="submit" class="btn btn-primary">Submit</button>
             </form>
